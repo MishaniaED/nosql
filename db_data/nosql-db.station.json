@@ -1,0 +1,50 @@
+[{
+  "_id": {
+    "$oid": "658c6db734c75e68dcbe4b8c"
+  }
+},
+{
+  "_id": {
+    "$oid": "658ca89734c75e68dcbe4b91"
+  },
+  "id": 0,
+  "country_name": "Russia",
+  "area_name": "Sergiyev Posad",
+  "name": "Sergiyev Posad"
+},
+{
+  "_id": {
+    "$oid": "658ca89734c75e68dcbe4b92"
+  },
+  "id": 1,
+  "country_name": "Russia",
+  "area_name": "Pereslavl-Zalessky",
+  "name": "Pereslavl"
+},
+{
+  "_id": {
+    "$oid": "658ca89734c75e68dcbe4b93"
+  },
+  "id": 2,
+  "country_name": "Russia",
+  "area_name": "Rostov",
+  "name": "Rostov-Yaroslavskij"
+},
+{
+  "_id": {
+    "$oid": "658ca89734c75e68dcbe4b94"
+  },
+  "id": 3,
+  "country_name": "Russia",
+  "area_name": "Yaroslavl",
+  "name": "Yaroslavl-Glavniy"
+},
+{
+  "_id": {
+    "$oid": "658ca89734c75e68dcbe4b95"
+  },
+  "id": 4,
+  "country_name": "Russia",
+  "area_name": "Vladimir",
+  "name": "Vladimir"
+}]

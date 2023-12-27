@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 
 class Station(BaseModel):
-    station_id: int
+    id: int
+    country_name: str
+    area_name: str
     name: str
-    region: str

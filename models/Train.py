@@ -1,9 +1,10 @@
-from datetime import datetime
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class Train(BaseModel):
-    train_id: int
+    id: int
     route_id: int
+    type: str # Lastochka
     departure_date: datetime
     arrival_date: datetime

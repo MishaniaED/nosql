@@ -1,0 +1,35 @@
+[{
+  "_id": {
+    "$oid": "658c6dce34c75e68dcbe4b8e"
+  }
+},
+{
+  "_id": {
+    "$oid": "658cab3534c75e68dcbe4b96"
+  },
+  "id": 0,
+  "train_id": 0,
+  "status": "free",
+  "price": 3499.99,
+  "passenger_data": "",
+  "comfort_class": "economy",
+  "carriage_number": 5,
+  "seat_number": 3,
+  "booking_date": null,
+  "payment_date": null
+},
+{
+  "_id": {
+    "$oid": "658cab3534c75e68dcbe4b97"
+  },
+  "id": 1,
+  "train_id": 0,
+  "status": "booked",
+  "price": 6990,
+  "passenger_data": "Petr Petrovich",
+  "comfort_class": "business",
+  "carriage_number": 1,
+  "seat_number": 20,
+  "booking_date": "2023-09-10T10:51:00.389Z",
+  "payment_date": null
+}]

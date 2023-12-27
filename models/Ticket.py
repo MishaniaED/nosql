@@ -1,12 +1,15 @@
-from datetime import datetime
 from pydantic import BaseModel
+from datetime import datetime
 
 
-class TicketPlace(BaseModel):
-    ticket_id: int
+class Ticket(BaseModel):
+    id: int
     train_id: int
-    seat_number: int
-    status: str  # 'free', 'booked', 'purchased'
+    status: str
     price: float
-    booking_time: datetime = None
-    payment_time: datetime = None
+    passenger_data: str     # John Smith
+    comfort_class: str      # Economy, business
+    carriage_number: int    # Wagon number
+    seat_number: int
+    booking_date: datetime = None
+    payment_date: datetime = None

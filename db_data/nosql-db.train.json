@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "658c6dc734c75e68dcbe4b8d"
+  }
+},
+{
+  "_id": {
+    "$oid": "658cac1c34c75e68dcbe4b98"
+  },
+  "id": 0,
+  "route_id": 0,
+  "type": "Lastochka",
+  "departure_data": "2023-09-30T06:15:00.389Z",
+  "arrival_data": "2023-10-04T21:50:00.389Z"
+}]
