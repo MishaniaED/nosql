@@ -70,5 +70,8 @@
 3. Тестирование поведения системы при отключении узла.
 
 ## Поведение системы при отключении узлов
-
-
+### Кластер работает в следующих случаях:
+![image description](db_data/diagrams/1.jpg)
+![image description](db_data/diagrams/2.jpg)
+![image description](db_data/diagrams/3.jpg)
+![image description](db_data/diagrams/4.jpg)
