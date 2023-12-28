@@ -5,7 +5,7 @@ from typing import List
 class TicketService:
 
     @staticmethod
-    async def search_tickets():
+    async def search_tickets(train_id: int, status: str, comfort_class: str):  ### Параметры поиска
         pass
 
     @staticmethod
@@ -17,9 +17,9 @@ class TicketService:
         pass
 
     @staticmethod
-    async def get_ticket(ticket_id):
+    async def get_ticket(ticket_id: int):
         pass
 
     @staticmethod
-    async def add_ticket(ticket_data):
+    async def add_ticket(ticket_data: int):
         pass

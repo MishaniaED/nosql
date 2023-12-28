@@ -5,5 +5,5 @@ class RouteService:
         pass
 
     @staticmethod
-    async def get_route(route_id):
+    async def get_route(route_id: int):
         pass

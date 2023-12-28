@@ -5,5 +5,5 @@ class StationService:
         pass
 
     @staticmethod
-    async def get_station(station_id):
+    async def get_station(station_id: int):
         pass
