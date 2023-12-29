@@ -8,10 +8,11 @@ headers = {
     "Content-Type": "application/json"
 }
 
+
 def generate_stations(number):
     url = url_base + "station/"
-    country_names=["Russia"]
-    area_names=[
+    country_names = ["Russia"]
+    area_names = [
         "Moscow",
         "St. Petersburg",
         "Kazan",
@@ -33,7 +34,7 @@ def generate_stations(number):
         "Tomsk",
         "Saransk"
     ]
-    names=[
+    names = [
         "Moskovskiy Vokzal",
         "Saint Petersburg-Glavnyy",
         "Yaroslavskiy Vokzal",
@@ -92,7 +93,6 @@ def generate_routes(number):
              "Ural Pass",
              "Far East Expedition"]
 
-
     types = ["Tourist", "Express", "Freight"]
 
     for id in range(0, number):
@@ -109,10 +109,12 @@ def generate_routes(number):
             print(f"Object {id} created")
         else:
             print(f"Error while creating {id}: {response.text}")
+
+
 def generate_trains(number):
     url = url_base + "train/"
 
-    types=["Lastochka", "Cargo"]
+    types = ["Lastochka", "Cargo"]
 
     for id in range(0, number):
         response = requests.post(url, json={
@@ -126,9 +128,11 @@ def generate_trains(number):
             print(f"Object {id} created")
         else:
             print(f"Error while creating {id}: {response.text}")
+
+
 def generate_tickets(number):
     url = url_base + "ticket/"
-    comfort_class=["economy", "business"]
+    comfort_class = ["economy", "business"]
     passenger_data = [
         "Ivan Petrov",
         "Maria Ivanova",
@@ -167,6 +171,7 @@ def generate_tickets(number):
             print(f"Object {id} created")
         else:
             print(f"Error while creating {id}: {response.text}")
+
 
 if __name__ == "__main__":
     generate_stations(200)
