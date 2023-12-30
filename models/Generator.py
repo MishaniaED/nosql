@@ -2,7 +2,7 @@ import datetime
 import random
 import requests
 
-url_base = "http://localhost:8000/"
+url_base = "http://localhost:8080/"
 headers = {
     "accept": "application/json",
     "Content-Type": "application/json"

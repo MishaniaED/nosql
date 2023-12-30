@@ -1,5 +1,5 @@
 instance = new Mongo("host.docker.internal:27017");
-db = instance.getDB("api-db");
+db = instance.getDB("mongo_db_node_01");
 
 config = {
     "_id": "docker-replicaset",
