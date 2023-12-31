@@ -12,11 +12,6 @@ x-elasticsearch-healthcheck: &elasticsearch-healthcheck
     retries: 80
     test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://127.0.0.1:9200
 
-x-memcached-healthcheck: &memcached-healthcheck
-  healthcheck:
-    test: echo stats | nc 127.0.0.1 11211
-    interval: 10s
-    retries: 60
 
 services:
   server:
@@ -69,8 +64,8 @@ services:
       mongo_db_node_03:
         condition: service_healthy
     volumes:
-      - init-mongo.js:/infrastructure/init-mongo.js
-    entrypoint: [ "mongosh", "--host", "host.docker.internal", "--port", "27017", "--file", "/infrastructure/init-mongo.js"]
+      - ./init-mongo.js:/init-mongo.js:ro
+    entrypoint: [ "mongosh", "--host", "host.docker.internal", "--port", "27017", "--file", "/init-mongo.js"]
 
   elasticsearch_node_main:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
@@ -101,7 +96,7 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=elasticsearch-master,elasticsearch-data2,elasticsearch-data3
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata1:/usr/share/elasticsearch/data
@@ -115,7 +110,7 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=elasticsearch-master,elasticsearch-data1,elasticsearch-data3
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata2:/usr/share/elasticsearch/data
@@ -129,30 +124,13 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.seed_hosts=elasticsearch-master,elasticsearch-data1,elasticsearch-data2
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata3:/usr/share/elasticsearch/data
     networks:
       - elasticnet
 
-  memcached_node_01:
-    image: memcached:alpine
-    <<: [ *memcached-healthcheck ]
-    ports:
-      - "11211:11211"
-
-  memcached_node_02:
-    image: memcached:alpine
-    <<: [ *memcached-healthcheck ]
-    ports:
-      - "11212:11211"
-
-  memcached_node_03:
-    image: memcached:alpine
-    <<: [ *memcached-healthcheck ]
-    ports:
-      - "11213:11211"
 
 volumes:
   elasticdatamain:
