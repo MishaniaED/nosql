@@ -8,7 +8,7 @@ from services.TicketService import TicketService
 router = APIRouter()
 
 
-@router.post("/book/{ticket_id}", response_model=bool, responses={
+@router.post("/book/{id}", response_model=bool, responses={
     404: {"description": "Ticket not found"},
     400: {"description": "Ticket already booked or purchased"},
     503: {"description": "Failed to lock ticket"},
@@ -29,7 +29,7 @@ async def book_ticket(ticket_id: int):
             raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/purchase/{ticket_id}", response_model=bool, responses={
+@router.post("/purchase/{id}", response_model=bool, responses={
     404: {"description": "Ticket not found"},
     400: {"description": "Ticket not booked"},
     500: {"description": "Payment processing error"},
@@ -48,14 +48,14 @@ async def purchase_ticket(ticket_id: int):
 
 
 @router.get("/search-tickets/", response_model=List[Ticket])
-async def search_tickets_route():  ### ПАРАМЕТРЫ ПОИСКА
+async def search_tickets_route(train_id: int, status: str, comfort_class: str):  ### ПАРАМЕТРЫ ПОИСКА
     try:
-        return await TicketService.search_tickets()  ### ПАРАМЕТРЫ ПОИСКА
+        return await TicketService.search_tickets(train_id, status, comfort_class)  ### ПАРАМЕТРЫ ПОИСКА
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/{ticket_id}", response_model=Ticket, responses={
+@router.get("/{id}", response_model=Ticket, responses={
     404: {"description": "Ticket not found"},
     500: {"description": "Server error"},
 })

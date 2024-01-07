@@ -1,4 +1,4 @@
-instance = new Mongo("host.docker.internal:27017");
+instance = new Mongo("mongo_db_node_01:27017");
 db = instance.getDB("mongo_db_node_01");
 
 config = {
@@ -6,22 +6,21 @@ config = {
     "members": [
         {
             "_id": 0,
-            "host": "host.docker.internal:27017"
+            "host": "mongo_db_node_01:27017"
         },
         {
             "_id": 1,
-            "host": "host.docker.internal:27018"
+            "host": "mongo_db_node_02:27017"
         },
         {
             "_id": 2,
-            "host": "host.docker.internal:27019"
+            "host": "mongo_db_node_03:27017"
         }
     ]
 };
 
 try {
-    rs.conf()
-}
-catch {
+    rs.conf();
+} catch {
     rs.initiate(config);
 }

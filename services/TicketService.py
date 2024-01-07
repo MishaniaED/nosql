@@ -21,19 +21,19 @@ class TicketService:
         for train in trains:
             try:
                 # Fetching tickets for each train from MongoDB
-                train_tickets = async_db.tickets.find({"train_id": train["train_id"],
+                train_tickets = async_db.tickets.find({"id": train["id"],
                                                        "status": "free"})
                 async for ticket in train_tickets:
                     tickets.append(Ticket(**ticket))
             except Exception as e:
                 raise Exception(
-                    f"Error fetching tickets for train {train['train_id']}: {e}")
+                    f"Error fetching tickets for train {train['id']}: {e}")
 
         return tickets
 
     @staticmethod
     async def book_ticket(ticket_id: int) -> bool:
-        result = await async_db.tickets.find_one({"ticket_id": ticket_id})
+        result = await async_db.tickets.find_one({"id": ticket_id})
         if not result:
             raise Exception("Ticket not found")
 
@@ -44,9 +44,9 @@ class TicketService:
             raise Exception("Failed to lock ticket")
 
         try:
-            update_data = {"$set": {"status": "booked", "booking_time": datetime.now()}}
+            update_data = {"$set": {"status": "booked", "booking_date": datetime.now()}}
             updated_ticket = await async_db.tickets.find_one_and_update(
-                {"ticket_id": ticket_id},
+                {"id": ticket_id},
                 update_data,
                 return_document=ReturnDocument.AFTER
             )
@@ -61,7 +61,7 @@ class TicketService:
     @staticmethod
     async def purchase_ticket(ticket_id: int) -> bool:
         payment_successful = True  # Placeholder
-        result = await async_db.tickets.find_one({"ticket_id": ticket_id})
+        result = await async_db.tickets.find_one({"id": ticket_id})
 
         if not result:
             raise Exception("Ticket not found")
@@ -73,7 +73,7 @@ class TicketService:
             try:
                 update_data = {"$set": {"status": "purchased", "payment_time": datetime.now()}}
                 updated_ticket = await async_db.tickets.find_one_and_update(
-                    {"ticket_id": ticket_id},
+                    {"id": ticket_id},
                     update_data,
                     return_document=ReturnDocument.AFTER
                 )
@@ -89,7 +89,7 @@ class TicketService:
 
     @staticmethod
     async def get_ticket(ticket_id: int):
-        result = await async_db.tickets.find_one({"ticket_id": ticket_id})
+        result = await async_db.tickets.find_one({"id": ticket_id})
         if result:
             return result
         return None
@@ -97,9 +97,9 @@ class TicketService:
     @staticmethod
     async def add_ticket(ticket_data):
         ticket_data.status = "free"
-        ticket_data.booking_time = datetime(1, 1, 1, 0, 0, 0)
-        ticket_data.payment_time = datetime(1, 1, 1, 0, 0, 0)
-        existing_ticket = await async_db.tickets.find_one({"ticket_id": ticket_data.ticket_id})
+        ticket_data.booking_date = datetime(1, 1, 1, 0, 0, 0)
+        ticket_data.payment_date = datetime(1, 1, 1, 0, 0, 0)
+        existing_ticket = await async_db.tickets.find_one({"id": ticket_data.id})
         if existing_ticket:
             return None
         ticket_dict = ticket_data.dict()

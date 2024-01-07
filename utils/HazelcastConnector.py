@@ -9,7 +9,7 @@ coloredlogs.install()
 
 def get_hazelcast_client():
     try:
-        client = hazelcast.HazelcastClient()
+        client = hazelcast.HazelcastClient(cluster_name="dev", cluster_members=["hazelcast:5701"])
         logger.info("Connected to the Hazelcast cluster")
         return client
     except Exception as e:

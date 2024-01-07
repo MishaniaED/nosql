@@ -37,8 +37,8 @@ async def get_train(train_id: int):
 
 
 @router.get("/available/", response_model=List[Train])
-async def available_trains(route_id: int, type: str, departure_date: datetime, arrival_date: datetime):
-    results = await TrainService.get_available_trains(route_id, type, departure_date, arrival_date)
+async def available_trains(departure_station_id: int, departure_date: datetime, arrival_station_id: int):
+    results = await TrainService.get_available_trains(departure_station_id, departure_date, arrival_station_id)
 
     return [Train(**result) for result in results]
 

@@ -8,7 +8,7 @@ class TrainService:
 
     @staticmethod
     async def initialize_train(train_data):
-        existing_station = await async_db.trains.find_one({"train_id": train_data["train_id"]})
+        existing_station = await async_db.trains.find_one({"id": train_data["id"]})
         if existing_station:
             return None
         await add_train_to_index(train_data)
@@ -19,7 +19,7 @@ class TrainService:
 
     @staticmethod
     async def get_train(train_id: int):
-        result = await async_db.trains.find_one({"train_id": train_id})
+        result = await async_db.trains.find_one({"id": train_id})
         if result:
             return result
         return None
@@ -30,6 +30,6 @@ class TrainService:
 
     @staticmethod
     async def delete_train(train_id: int):
-        deleted_train = await async_db.trains.delete_one({"train_id": train_id})
+        deleted_train = await async_db.trains.delete_one({"id": train_id})
         delete_train_from_index(train_id)
         return deleted_train.deleted_count > 0

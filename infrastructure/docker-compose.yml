@@ -26,7 +26,7 @@ services:
     <<: [ *mongodb-healthcheck ]
     volumes:
       - mongodata1:/data/mongo_node_01:/data/db
-    command: mongod --replSet docker-replicaset
+    command: [ "mongod", "--replSet", "docker-replicaset", "--bind_ip_all" ]
     ports:
       - "27017:27017"
     networks:
@@ -37,7 +37,7 @@ services:
     <<: [ *mongodb-healthcheck ]
     volumes:
       - mongodata2:/data/mongo_node_02:/data/db
-    command: mongod --replSet docker-replicaset
+    command: [ "mongod", "--replSet", "docker-replicaset", "--bind_ip_all" ]
     ports:
       - "27018:27017"
     networks:
@@ -48,7 +48,7 @@ services:
     <<: [ *mongodb-healthcheck ]
     volumes:
       - mongodata3:/data/mongo_node_03:/data/db
-    command: mongod --replSet docker-replicaset
+    command: [ "mongod", "--replSet", "docker-replicaset", "--bind_ip_all" ]
     ports:
       - "27019:27017"
     networks:
@@ -65,14 +65,18 @@ services:
         condition: service_healthy
     volumes:
       - ./init-mongo.js:/init-mongo.js:ro
-    entrypoint: [ "mongosh", "--host", "host.docker.internal", "--port", "27017", "--file", "/init-mongo.js"]
+    entrypoint: [ "mongosh", "--host", "mongo_db_node_01", "--port", "27017", "--file", "/init-mongo.js" ]
+    networks:
+      - elasticnet
+
 
   elasticsearch_node_main:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    <<: [ *elasticsearch-healthcheck ]
     environment:
       - node.name=es-master
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=elasticsearch-data1,elasticsearch-data2,elasticsearch-data3
+      - discovery.seed_hosts=elasticsearch_node_1,elasticsearch_node_2,elasticsearch_node_3
       - cluster.initial_master_nodes=es-master
       - node.roles=master
       - bootstrap.memory_lock=true
@@ -91,46 +95,61 @@ services:
 
   elasticsearch_node_1:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    <<: [ *elasticsearch-healthcheck ]
     environment:
       - node.name=es-data1
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=elasticsearch-master,elasticsearch-data2,elasticsearch-data3
+      - discovery.seed_hosts=elasticsearch_node_main,elasticsearch_node_2,elasticsearch_node_3
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9201:9200
     networks:
       - elasticnet
 
   elasticsearch_node_2:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    <<: [ *elasticsearch-healthcheck ]
     environment:
       - node.name=es-data2
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=elasticsearch-master,elasticsearch-data1,elasticsearch-data3
+      - discovery.seed_hosts=elasticsearch_node_main,elasticsearch_node_1,elasticsearch_node_3
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata2:/usr/share/elasticsearch/data
+    ports:
+      - 9202:9200
     networks:
       - elasticnet
 
   elasticsearch_node_3:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    <<: [ *elasticsearch-healthcheck ]
     environment:
       - node.name=es-data3
       - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=elasticsearch-master,elasticsearch-data1,elasticsearch-data2
+      - discovery.seed_hosts=elasticsearch_node_main,elasticsearch_node_1,elasticsearch_node_2
       - node.roles=data
-      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
     volumes:
       - elasticdata3:/usr/share/elasticsearch/data
+    ports:
+      - 9203:9200
     networks:
       - elasticnet
 
+  hazelcast:
+    image: hazelcast/hazelcast:5.3.0
+    ports:
+      - "5701:5701"
+    networks:
+      - elasticnet
 
 volumes:
   elasticdatamain:
